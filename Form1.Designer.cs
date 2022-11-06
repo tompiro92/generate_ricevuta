@@ -33,16 +33,16 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBoxFileAnagrafica = new System.Windows.Forms.TextBox();
+            this.buttonFileAnagrafica = new Prototipo_Denso.PersonalUI.CustomButton();
             this.numericUpDownNumeroFattura = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxLog = new System.Windows.Forms.RichTextBox();
-            this.textBoxFileCosti = new System.Windows.Forms.TextBox();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.buttonFileAnagrafica = new Prototipo_Denso.PersonalUI.CustomButton();
             this.buttonGeneraFatture = new Prototipo_Denso.PersonalUI.CustomButton();
             this.buttonFileCosti = new Prototipo_Denso.PersonalUI.CustomButton();
+            this.textBoxFileCosti = new System.Windows.Forms.TextBox();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -74,7 +74,7 @@
             // 
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox2.Enabled = false;
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Image = global::Genera_Fatture.Properties.Resources.LogoImpresaPulizie;
             this.pictureBox2.Location = new System.Drawing.Point(184, 29);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(332, 144);
@@ -85,7 +85,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Enabled = false;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Image = global::Genera_Fatture.Properties.Resources.BrillaTuttoSrl;
             this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(522, 29);
             this.pictureBox1.Name = "pictureBox1";
@@ -105,6 +105,32 @@
             this.textBoxFileAnagrafica.ReadOnly = true;
             this.textBoxFileAnagrafica.Size = new System.Drawing.Size(784, 30);
             this.textBoxFileAnagrafica.TabIndex = 11;
+            // 
+            // buttonFileAnagrafica
+            // 
+            this.buttonFileAnagrafica.BackColor = System.Drawing.Color.White;
+            this.buttonFileAnagrafica.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.buttonFileAnagrafica.BorderColor = System.Drawing.Color.Transparent;
+            this.buttonFileAnagrafica.ButtonColor = System.Drawing.Color.DodgerBlue;
+            this.buttonFileAnagrafica.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonFileAnagrafica.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.buttonFileAnagrafica.FlatAppearance.BorderSize = 0;
+            this.buttonFileAnagrafica.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.buttonFileAnagrafica.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.buttonFileAnagrafica.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonFileAnagrafica.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonFileAnagrafica.ForeColor = System.Drawing.Color.Transparent;
+            this.buttonFileAnagrafica.Location = new System.Drawing.Point(110, 303);
+            this.buttonFileAnagrafica.Name = "buttonFileAnagrafica";
+            this.buttonFileAnagrafica.OnHoverBorderColor = System.Drawing.Color.Transparent;
+            this.buttonFileAnagrafica.OnHoverButtonColor = System.Drawing.Color.LightSkyBlue;
+            this.buttonFileAnagrafica.OnHoverTextColor = System.Drawing.Color.White;
+            this.buttonFileAnagrafica.Size = new System.Drawing.Size(250, 50);
+            this.buttonFileAnagrafica.TabIndex = 10;
+            this.buttonFileAnagrafica.Text = "File Excel Anagrafica";
+            this.buttonFileAnagrafica.TextColor = System.Drawing.Color.White;
+            this.buttonFileAnagrafica.UseVisualStyleBackColor = false;
+            this.buttonFileAnagrafica.Click += new System.EventHandler(this.buttonFileAnagrafica_Click);
             // 
             // numericUpDownNumeroFattura
             // 
@@ -144,7 +170,7 @@
             // 
             // textBoxLog
             // 
-            this.textBoxLog.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.textBoxLog.BackColor = System.Drawing.Color.Azure;
             this.textBoxLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBoxLog.Font = new System.Drawing.Font("Times New Roman", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxLog.ForeColor = System.Drawing.Color.Black;
@@ -155,48 +181,6 @@
             this.textBoxLog.TabIndex = 5;
             this.textBoxLog.Text = "";
             this.textBoxLog.WordWrap = false;
-            // 
-            // textBoxFileCosti
-            // 
-            this.textBoxFileCosti.BackColor = System.Drawing.Color.White;
-            this.textBoxFileCosti.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxFileCosti.Enabled = false;
-            this.textBoxFileCosti.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxFileCosti.Location = new System.Drawing.Point(405, 232);
-            this.textBoxFileCosti.Name = "textBoxFileCosti";
-            this.textBoxFileCosti.ReadOnly = true;
-            this.textBoxFileCosti.Size = new System.Drawing.Size(784, 30);
-            this.textBoxFileCosti.TabIndex = 3;
-            // 
-            // openFileDialog
-            // 
-            this.openFileDialog.FileName = "openFileDialog";
-            // 
-            // buttonFileAnagrafica
-            // 
-            this.buttonFileAnagrafica.BackColor = System.Drawing.Color.White;
-            this.buttonFileAnagrafica.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.buttonFileAnagrafica.BorderColor = System.Drawing.Color.Transparent;
-            this.buttonFileAnagrafica.ButtonColor = System.Drawing.Color.DodgerBlue;
-            this.buttonFileAnagrafica.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonFileAnagrafica.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.buttonFileAnagrafica.FlatAppearance.BorderSize = 0;
-            this.buttonFileAnagrafica.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.buttonFileAnagrafica.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.buttonFileAnagrafica.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonFileAnagrafica.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonFileAnagrafica.ForeColor = System.Drawing.Color.Transparent;
-            this.buttonFileAnagrafica.Location = new System.Drawing.Point(110, 303);
-            this.buttonFileAnagrafica.Name = "buttonFileAnagrafica";
-            this.buttonFileAnagrafica.OnHoverBorderColor = System.Drawing.Color.Transparent;
-            this.buttonFileAnagrafica.OnHoverButtonColor = System.Drawing.Color.LightSkyBlue;
-            this.buttonFileAnagrafica.OnHoverTextColor = System.Drawing.Color.White;
-            this.buttonFileAnagrafica.Size = new System.Drawing.Size(250, 50);
-            this.buttonFileAnagrafica.TabIndex = 10;
-            this.buttonFileAnagrafica.Text = "File Excel Anagrafica";
-            this.buttonFileAnagrafica.TextColor = System.Drawing.Color.White;
-            this.buttonFileAnagrafica.UseVisualStyleBackColor = false;
-            this.buttonFileAnagrafica.Click += new System.EventHandler(this.buttonFileAnagrafica_Click);
             // 
             // buttonGeneraFatture
             // 
@@ -250,12 +234,30 @@
             this.buttonFileCosti.UseVisualStyleBackColor = false;
             this.buttonFileCosti.Click += new System.EventHandler(this.buttonFileCosti_Click);
             // 
+            // textBoxFileCosti
+            // 
+            this.textBoxFileCosti.BackColor = System.Drawing.Color.White;
+            this.textBoxFileCosti.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxFileCosti.Enabled = false;
+            this.textBoxFileCosti.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFileCosti.Location = new System.Drawing.Point(405, 232);
+            this.textBoxFileCosti.Name = "textBoxFileCosti";
+            this.textBoxFileCosti.ReadOnly = true;
+            this.textBoxFileCosti.Size = new System.Drawing.Size(784, 30);
+            this.textBoxFileCosti.TabIndex = 3;
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog";
+            // 
             // form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1291, 846);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "form";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

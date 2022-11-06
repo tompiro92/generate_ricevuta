@@ -169,8 +169,10 @@ namespace Genera_Fatture
 
                     if (!Directory.Exists(folderOutput)) {
 
-                        for (int i = 2; i < rowsExcelCosti; i++)
+                        for (int i = 2; i <= rowsExcelCosti; i++)
                         {
+                            Console.WriteLine("ROW COSTI: " + i);
+
                             // Carica file template
                             GestioneScritturaExcelTemplateFattura excelTemplateFattura = new GestioneScritturaExcelTemplateFattura("./Data/Template.xlsx");
 
@@ -187,25 +189,23 @@ namespace Genera_Fatture
                             String comune = "";
                             String cap = "";
 
-                            for (int j = 2; j < rowsExcelAnagrafica; ++j)
+                            
+                            if (!fattura.Trim().Equals("N") && !fattura.Trim().Equals("NO"))
                             {
-                                String nomeCondominioAnagrafica = excelAnagrafica.retrieveCondominio(j);
-
-                                if (!nomeCondominioAnagrafica.Trim().Equals("") && nomeCondominioAnagrafica.Trim().Equals(nomeCondominio.Trim()))
+                                for (int j = 2; j <= rowsExcelAnagrafica; ++j)
                                 {
-                                    indirizzo = excelAnagrafica.retrieveIndirizzo(j);
-                                    cap = excelAnagrafica.retrieveCap(j);
-                                    comune = excelAnagrafica.retrieveComune(j);
-                                    provincia = excelAnagrafica.retrieveProvincia(j);
+                                    String nomeCondominioAnagrafica = excelAnagrafica.retrieveCondominio(j);
+
+                                    if (!nomeCondominioAnagrafica.Trim().Equals("") && nomeCondominioAnagrafica.Trim().Equals(nomeCondominio.Trim()))
+                                    {
+                                        indirizzo = excelAnagrafica.retrieveIndirizzo(j);
+                                        cap = excelAnagrafica.retrieveCap(j);
+                                        comune = excelAnagrafica.retrieveComune(j);
+                                        provincia = excelAnagrafica.retrieveProvincia(j);
+                                    }
                                 }
-                            }
-
-                            bool valid = CheckFieldAndLog(progressivo, amministratore, prezzo, nomeCondominio, cap, provincia, indirizzo, comune);
-
-                            if (!fattura.Equals("N") && !fattura.Equals("NO"))
-                            {
                                 ++progressivo;
-
+                                bool valid = CheckFieldAndLog(i, progressivo, amministratore, prezzo, nomeCondominio, cap, provincia, indirizzo, comune);
                                 excelTemplateFattura.writeInFile(progressivo.ToString(), TipologiaWriteTemplateExcel.NUMERO_FATTURA);
                                 excelTemplateFattura.writeInFile(data.ToUpper(), TipologiaWriteTemplateExcel.DATA_FATTURA);
                                 excelTemplateFattura.writeInFile(prezzo, TipologiaWriteTemplateExcel.COSTO_FATTURA);
@@ -233,15 +233,14 @@ namespace Genera_Fatture
                             }
                         }
 
-                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata.");
+                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi in C:\\Fatture)");
 
                         workbookUltimaFattura.Worksheets[0][1, 1].Text = progressivo.ToString();
                         workbookUltimaFattura.Save();
-                        workbookUltimaFattura.Dispose();
                         this.ClearUI();
                         if (validazioneGenerale == false)
                         {
-                            this.Invoke(new Action(() => MessageBox.Show(this, "Attenzione alcune fatture non sono state generate correttamente perché avevano dei campi mancanti. Sopra trovi maggiori informazioni per eventualmente correggerli manualmente", "Warn", MessageBoxButtons.OK, MessageBoxIcon.Warning)));
+                            this.Invoke(new Action(() => MessageBox.Show(this, "Attenzione alcune fatture non sono state generate correttamente perché avevano dei campi mancanti. Nel log applicativo trovi maggiori informazioni per correggerle manualmente", "Warn", MessageBoxButtons.OK, MessageBoxIcon.Warning)));
                         }
                     }
                     else
@@ -286,10 +285,10 @@ namespace Genera_Fatture
             this.InputFilePathAnagrafica = "";
         }
 
-        private bool CheckFieldAndLog(int numeroFattura, String amministratore, String prezzo, String nomeCondominio, String cap, String provincia, String indirizzo, String comune)
+        private bool CheckFieldAndLog(int riga, int numeroFattura, String amministratore, String prezzo, String nomeCondominio, String cap, String provincia, String indirizzo, String comune)
         {
             bool valid = true;
-            String log = $"***Numero Fattura [{ numeroFattura }] - Non sono stati trovati i seguenti campi: |";
+            String log = $"Cliente alla riga {riga} Numero Fattura [{ numeroFattura }] - Non sono stati trovati i seguenti campi: |";
 
             if (amministratore.Equals(""))
             {
@@ -333,9 +332,12 @@ namespace Genera_Fatture
                 log += " CAP |";
             }
 
-           
+            if (valid == false)
+            {
+                delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, log);
+            }
 
-            return true;
+            return valid;
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

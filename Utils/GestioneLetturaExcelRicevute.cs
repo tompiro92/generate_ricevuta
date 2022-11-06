@@ -53,7 +53,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveAmministratore(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColAmministratore] != null ? worksheet[row, indexColAmministratore].Value.ToUpper() : "";
             }
@@ -65,7 +65,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveCondominio(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColCondominio] != null ? worksheet[row, indexColCondominio].Value.ToUpper() : "";
             }
@@ -77,7 +77,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveCosto(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColCosto] != null ? worksheet[row, indexColCosto].Value.ToUpper() : "";
             }
@@ -89,7 +89,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveFattura(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColFattura] != null ? worksheet[row, indexColFattura].Value.ToUpper() : "";
             }

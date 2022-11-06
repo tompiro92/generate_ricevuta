@@ -83,6 +83,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include=".gitignore" />
     <None Include="packages.config" />
@@ -99,6 +100,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\LogoImpresaPulizie.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LogoImpresaPulizie1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BrillaTuttoSrl.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

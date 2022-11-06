@@ -62,7 +62,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveCondominio(int row)
         {
-            if(row < worksheet.Rows.Count() && row > 0)
+            if(row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColCondominio] != null ? worksheet[row, indexColCondominio].Value.ToUpper() : "";
             }
@@ -74,7 +74,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveIndirizzo(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColIndirizzo] != null ? worksheet[row, indexColIndirizzo].Value.ToUpper() : "";
             }
@@ -86,7 +86,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveCap(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColCap] != null ? worksheet[row, indexColCap].Value.ToUpper() : "";
             }
@@ -98,7 +98,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveComune(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColComune] != null ? worksheet[row, indexColComune].Value.ToUpper() : "";
             }
@@ -110,7 +110,7 @@ namespace Genera_Fatture.Utils
 
         public String retrieveProvincia(int row)
         {
-            if (row < worksheet.Rows.Count() && row > 0)
+            if (row <= worksheet.Rows.Count() && row > 0)
             {
                 return worksheet[row, indexColProvincia] != null ? worksheet[row, indexColProvincia].Value.ToUpper() : "";
             }
