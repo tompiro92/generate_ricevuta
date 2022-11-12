@@ -39,6 +39,33 @@ namespace Genera_Fatture
             }
         }
 
+
+        public void disableEnableButtonSettingDelegate(CustomButton customButton, bool enable)
+        {
+            try
+            {
+                if (customButton.InvokeRequired)
+                {
+                    Action safeWrite = delegate { disableEnableButtonSettingDelegate(customButton, enable); };
+                    customButton.Invoke(safeWrite);
+                }
+                else
+                {
+                    if (enable)
+                    {
+                        customButton.Enabled = true;
+                    }
+                    else
+                    {
+                        customButton.Enabled = false;
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+            }
+        }
         public void changeTextInTextBoxDelegate(TextBox textBox, String text)
         {
             try

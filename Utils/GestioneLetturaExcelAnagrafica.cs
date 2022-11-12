@@ -14,21 +14,22 @@ namespace Genera_Fatture.Utils
         private int indexColCap;
         private int indexColProvincia;
         private int indexColComune;
-       
+        private SingletonFileInizializzazione singletonFileInizializzazione;
         public GestioneLetturaExcelAnagrafica(String pathFile)
         {
+            singletonFileInizializzazione = SingletonFileInizializzazione.getIstance();
+
             workbook = new Workbook();
             workbook.LoadFromFile(pathFile);
             //only on sheet 0 for now
             worksheet = workbook.Worksheets[0];
-            indexColCondominio = 2;
-            indexColIndirizzo = 5;
-            indexColCap = 6;
-            indexColProvincia = 8;
-            indexColComune = 7;
+            indexColCondominio = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_CONDOMINIO));
+            indexColIndirizzo = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_INDIRIZZO));
+            indexColCap = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_CAP));
+            indexColProvincia = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_PROVINCIA));
+            indexColComune = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_COMUNE));
             validazioneHeader();
         }
-
         private void validazioneHeader()
         {
             if(worksheet!= null)
@@ -46,11 +47,11 @@ namespace Genera_Fatture.Utils
                     || (!headerProvincia.Equals("PROV.") && !headerProvincia.Equals("PROVINCIA")))
                 {
                     throw new Exception("Il file anagrafica clienti selezionato non è valido. L'intestazione dovrebbe contenere:\n" +
-                        "Colonna A: CONDOMINIO O CONDOMINIO/PARCO\n" +
-                        "Colonna E: INDIRIZZO\n" +
-                        "Colonna F: COMUNE\n" +
-                        "Colonna G: CAP\n" +
-                        "Colonna H: PROVINCIA o PROV.");
+                        $"Colonna {indexColCondominio}: CONDOMINIO O CONDOMINIO/PARCO\n" +
+                        $"Colonna {indexColIndirizzo}: INDIRIZZO\n" +
+                        $"Colonna {indexColCap}: CAP\n" +
+                        $"Colonna {indexColComune}: COMUNE\n" +
+                        $"Colonna {indexColProvincia}: PROVINCIA o PROV.");
                 }
             }
             else

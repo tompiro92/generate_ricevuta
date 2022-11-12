@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonSettings = new Prototipo_Denso.PersonalUI.CustomButton();
+            this.label3 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.textBoxFileAnagrafica = new System.Windows.Forms.TextBox();
@@ -52,6 +54,9 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.buttonSettings);
+            this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.pictureBox2);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.textBoxFileAnagrafica);
@@ -69,6 +74,36 @@
             this.panel1.Size = new System.Drawing.Size(1297, 844);
             this.panel1.TabIndex = 2;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // buttonSettings
+            // 
+            this.buttonSettings.BackgroundImage = global::Genera_Fatture.Properties.Resources.icons8_automatico_100;
+            this.buttonSettings.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.buttonSettings.BorderColor = System.Drawing.Color.Transparent;
+            this.buttonSettings.ButtonColor = System.Drawing.Color.Transparent;
+            this.buttonSettings.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonSettings.FlatAppearance.BorderSize = 0;
+            this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSettings.Location = new System.Drawing.Point(1202, 29);
+            this.buttonSettings.Name = "buttonSettings";
+            this.buttonSettings.OnHoverBorderColor = System.Drawing.Color.Transparent;
+            this.buttonSettings.OnHoverButtonColor = System.Drawing.Color.Transparent;
+            this.buttonSettings.OnHoverTextColor = System.Drawing.Color.Transparent;
+            this.buttonSettings.Size = new System.Drawing.Size(69, 45);
+            this.buttonSettings.TabIndex = 16;
+            this.buttonSettings.TextColor = System.Drawing.Color.Transparent;
+            this.buttonSettings.UseVisualStyleBackColor = false;
+            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(1207, 77);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 19);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Settings";
             // 
             // pictureBox2
             // 
@@ -144,7 +179,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
-            this.label2.Location = new System.Drawing.Point(834, 411);
+            this.label2.Location = new System.Drawing.Point(813, 411);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(168, 23);
             this.label2.TabIndex = 8;
@@ -153,7 +188,7 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
-            this.dateTimePicker1.Location = new System.Drawing.Point(247, 409);
+            this.dateTimePicker1.Location = new System.Drawing.Point(264, 409);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(342, 30);
             this.dateTimePicker1.TabIndex = 7;
@@ -286,6 +321,8 @@
         private System.Windows.Forms.TextBox textBoxFileAnagrafica;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label3;
+        private Prototipo_Denso.PersonalUI.CustomButton buttonSettings;
     }
 }
 

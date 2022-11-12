@@ -1,10 +1,11 @@
 ﻿
+using Genera_Fatture.PersonalUI;
 using Genera_Fatture.Utils;
 using Spire.Xls;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -17,18 +18,22 @@ namespace Genera_Fatture
         public string InputFilePathCosti { get => inputFilePathCosti; set => inputFilePathCosti = value; }
         public string InputFilePathAnagrafica { get => inputFilePathAnagrafica; set => inputFilePathAnagrafica = value; }
 
+        private Dictionary<String, int> dictionary;
+
+        private SingletonFileInizializzazione singletonFile;
+
         private Delegates delegates;
     
 
         private String basePathOutputFile =  $"C:\\Fatture\\";
-        Workbook workbookUltimaFattura;
+        private Workbook workbookInizializzazione;
         private int progressivo;
 
         public form()
         {
             InitializeComponent();
             CustomInizializeComponent();
-            
+
         }
 
         private void CustomInizializeComponent()
@@ -53,24 +58,37 @@ namespace Genera_Fatture
             //inizializzazione ultima fattura.
             this.numericUpDownNumeroFattura.Minimum = 0;
             this.numericUpDownNumeroFattura.Maximum = 100000000;
-
-            workbookUltimaFattura = new Workbook();
-            workbookUltimaFattura.LoadFromFile("./Data/NumeroUltimaFattura.xlsx");
-            Worksheet worksheetUltimaFattura = workbookUltimaFattura.Worksheets[0];
-            int progressivo = 0 ;
-            if (DateTime.Now.Month == 1)
+            try
             {
-                progressivo = 0;
-            }
-            else
-            {
-                progressivo = int.Parse(worksheetUltimaFattura[1, 1].Value);
-                if (progressivo < 0)
+                singletonFile = SingletonFileInizializzazione.getIstance();
+                //workbookInizializzazione = new Workbook();
+                //workbookInizializzazione.LoadFromFile("./Data/Inizializzazione.xlsx");
+                //Worksheet worksheetUltimaFattura = workbookInizializzazione.Worksheets[0];            
+                int progressivo = 0;
+                if (DateTime.Now.Month == 1)
                 {
                     progressivo = 0;
                 }
+                else
+                {
+                    progressivo = int.Parse(singletonFile.getNumeroUltimaFattura());
+                    if (progressivo < 0)
+                    {
+                        progressivo = 0;
+                    }
+                }
+                this.numericUpDownNumeroFattura.Value = progressivo;
             }
-            this.numericUpDownNumeroFattura.Value = progressivo;
+            catch (Exception ex)
+            {
+                MessageBox.Show("Impossibile aprire il file di inizializzazione.Riprova e se continuasse a non funzionare contattare il proprietario del software", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw ex;
+            }
+        }
+
+        private void getValueFromFileInizializzazione()
+        {
+            throw new NotImplementedException();
         }
 
         private void buttonFileCosti_Click(object sender, EventArgs e)
@@ -138,6 +156,7 @@ namespace Genera_Fatture
             delegates.disableEnableButtonDelegate(buttonGeneraFatture, false);
             delegates.disableEnableButtonDelegate(buttonFileCosti, false);
             delegates.disableEnableButtonDelegate(buttonFileAnagrafica, false);     
+            delegates.disableEnableButtonSettingDelegate(buttonSettings, false);
 
             Thread t = new Thread(
                 () => generafatture(InputFilePathCosti));
@@ -183,14 +202,14 @@ namespace Genera_Fatture
                             String fattura = excelRicevute.retrieveFattura(i);
                             String data = dateTimePicker1.Value.ToString("dd/MM/yyyy");
                             String mese = "NEL MESE DI " + dateTimePicker1.Value.ToString("MMMM");
-
+                            String sospeso = excelRicevute.retrieveSospesi(i);
                             String indirizzo = "";
                             String provincia = "";
                             String comune = "";
                             String cap = "";
 
                             
-                            if (!fattura.Trim().Equals("N") && !fattura.Trim().Equals("NO"))
+                            if (!fattura.Trim().Equals("N") && !fattura.Trim().Equals("NO") && sospeso.Equals(""))
                             {
                                 for (int j = 2; j <= rowsExcelAnagrafica; ++j)
                                 {
@@ -229,14 +248,21 @@ namespace Genera_Fatture
                             }
                             else
                             {
-                                delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Cliente alla riga " + i + " è stato saltato perché il campo fattura è stato impostato su 'N' o 'NO'");
+                                if (!sospeso.Equals(""))
+                                {
+                                    delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Cliente alla riga " + i + " è stato saltato perché il campo sospesi non è vuoto");
+                                }
+                                else
+                                {
+                                    delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Cliente alla riga " + i + " è stato saltato perché il campo fattura è stato impostato su 'N' o 'NO'");
+                                }
                             }
                         }
 
                         delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi in C:\\Fatture)");
 
-                        workbookUltimaFattura.Worksheets[0][1, 1].Text = progressivo.ToString();
-                        workbookUltimaFattura.Save();
+                        singletonFile.setNumeroUltimaFattura(progressivo.ToString());
+                        
                         this.ClearUI();
                         if (validazioneGenerale == false)
                         {
@@ -263,6 +289,7 @@ namespace Genera_Fatture
                         this.Invoke(new Action(() => MessageBox.Show(this, "Il file con l'anagrafica dei clienti è vuoto. Impossibile generare documenti", "Warn", MessageBoxButtons.OK, MessageBoxIcon.Warning)));
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -278,6 +305,7 @@ namespace Genera_Fatture
 
             delegates.disableEnableButtonDelegate(buttonFileCosti, true);
             delegates.disableEnableButtonDelegate(buttonFileAnagrafica, true);
+            delegates.disableEnableButtonSettingDelegate(buttonSettings, true);
             delegates.disableEnableButtonDelegate(buttonGeneraFatture, false);
             delegates.changeTextInTextBoxDelegate(textBoxFileCosti, "");
             delegates.changeTextInTextBoxDelegate(textBoxFileAnagrafica, "");
@@ -344,5 +372,12 @@ namespace Genera_Fatture
         {
 
         }
+
+        private void buttonSettings_Click(object sender, EventArgs e)
+        {
+            DialogSettings dialogSettings = new DialogSettings();
+            DialogResult dialogResult = dialogSettings.ShowDialog(this);
+        }
+
     }
 }
