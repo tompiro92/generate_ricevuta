@@ -73,7 +73,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1297, 844);
             this.panel1.TabIndex = 2;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // buttonSettings
             // 
@@ -295,8 +294,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "form";
+            this.Opacity = 0D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Generatore Fatture";
+            this.Load += new System.EventHandler(this.onLoad);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

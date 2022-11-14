@@ -33,7 +33,7 @@ namespace Genera_Fatture
         {
             InitializeComponent();
             CustomInizializeComponent();
-
+            Console.WriteLine("LOADING");
         }
 
         private void CustomInizializeComponent()
@@ -387,10 +387,6 @@ namespace Genera_Fatture
             return valid;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void buttonSettings_Click(object sender, EventArgs e)
         {
@@ -405,5 +401,10 @@ namespace Genera_Fatture
             }
         }
 
+        private void onLoad(object sender, EventArgs e)
+        {
+            Console.WriteLine("LOADED");
+            this.Opacity = 1;
+        }
     }
 }
