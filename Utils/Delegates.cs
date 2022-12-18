@@ -129,6 +129,24 @@ namespace Genera_Fatture
             {
             }
         }
-      
+
+        public void disableEnableCheckBox(CheckBox checkbox, bool enable)
+        {
+            try
+            {
+                if (checkbox.InvokeRequired)
+                {
+                    Action safeWrite = delegate { disableEnableCheckBox(checkbox, enable); };
+                    checkbox.Invoke(safeWrite);
+                }
+                else
+                {
+                    checkbox.Enabled = enable;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }       
     }
 }

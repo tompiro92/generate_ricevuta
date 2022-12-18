@@ -51,7 +51,17 @@ namespace Genera_Fatture.Utils
             }
             else if (type.Equals(TipologiaWriteTemplateExcel.COSTO_FATTURA))
             {
-                worksheet[COSTO_FATTURA].Value2 = Math.Round(float.Parse(text), 2); ;
+                if (!text.Equals(""))
+                {
+                    try
+                    {
+                        worksheet[COSTO_FATTURA].Value2 = Math.Round(float.Parse(text), 2);
+                    }
+                    catch (FormatException ex)
+                    {
+                        worksheet[COSTO_FATTURA].Value2 = "";
+                    }
+                }
             }
             else if(type.Equals(TipologiaWriteTemplateExcel.MESE_FATTURA))
             {

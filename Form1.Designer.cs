@@ -45,6 +45,8 @@
             this.buttonFileCosti = new Prototipo_Denso.PersonalUI.CustomButton();
             this.textBoxFileCosti = new System.Windows.Forms.TextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.checkBoxLog = new System.Windows.Forms.CheckBox();
+            this.checkBoxlog2 = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -55,6 +57,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.checkBoxlog2);
+            this.panel1.Controls.Add(this.checkBoxLog);
             this.panel1.Controls.Add(this.buttonSettings);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.pictureBox2);
@@ -71,7 +75,7 @@
             this.panel1.Controls.Add(this.textBoxFileCosti);
             this.panel1.Location = new System.Drawing.Point(-2, 1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1297, 844);
+            this.panel1.Size = new System.Drawing.Size(1297, 866);
             this.panel1.TabIndex = 2;
             // 
             // buttonSettings
@@ -132,12 +136,11 @@
             // 
             this.textBoxFileAnagrafica.BackColor = System.Drawing.Color.White;
             this.textBoxFileAnagrafica.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxFileAnagrafica.Enabled = false;
-            this.textBoxFileAnagrafica.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFileAnagrafica.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxFileAnagrafica.Location = new System.Drawing.Point(405, 316);
             this.textBoxFileAnagrafica.Name = "textBoxFileAnagrafica";
             this.textBoxFileAnagrafica.ReadOnly = true;
-            this.textBoxFileAnagrafica.Size = new System.Drawing.Size(784, 30);
+            this.textBoxFileAnagrafica.Size = new System.Drawing.Size(784, 27);
             this.textBoxFileAnagrafica.TabIndex = 11;
             // 
             // buttonFileAnagrafica
@@ -272,23 +275,44 @@
             // 
             this.textBoxFileCosti.BackColor = System.Drawing.Color.White;
             this.textBoxFileCosti.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxFileCosti.Enabled = false;
-            this.textBoxFileCosti.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxFileCosti.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxFileCosti.Location = new System.Drawing.Point(405, 232);
             this.textBoxFileCosti.Name = "textBoxFileCosti";
             this.textBoxFileCosti.ReadOnly = true;
-            this.textBoxFileCosti.Size = new System.Drawing.Size(784, 30);
+            this.textBoxFileCosti.Size = new System.Drawing.Size(784, 27);
             this.textBoxFileCosti.TabIndex = 3;
             // 
             // openFileDialog
             // 
             this.openFileDialog.FileName = "openFileDialog";
             // 
+            // checkBoxLog
+            // 
+            this.checkBoxLog.AutoSize = true;
+            this.checkBoxLog.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxLog.Location = new System.Drawing.Point(14, 518);
+            this.checkBoxLog.Name = "checkBoxLog";
+            this.checkBoxLog.Size = new System.Drawing.Size(302, 23);
+            this.checkBoxLog.TabIndex = 17;
+            this.checkBoxLog.Text = "Mostra nel log se il cliente è sospeso";
+            this.checkBoxLog.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxlog2
+            // 
+            this.checkBoxlog2.AutoSize = true;
+            this.checkBoxlog2.Font = new System.Drawing.Font("Times New Roman", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxlog2.Location = new System.Drawing.Point(361, 518);
+            this.checkBoxlog2.Name = "checkBoxlog2";
+            this.checkBoxlog2.Size = new System.Drawing.Size(355, 23);
+            this.checkBoxlog2.TabIndex = 18;
+            this.checkBoxlog2.Text = "Mostra nel log se il campo fattura è  N o NO";
+            this.checkBoxlog2.UseVisualStyleBackColor = true;
+            // 
             // form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1291, 846);
+            this.ClientSize = new System.Drawing.Size(1291, 870);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -324,6 +348,8 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label3;
         private Prototipo_Denso.PersonalUI.CustomButton buttonSettings;
+        protected System.Windows.Forms.CheckBox checkBoxLog;
+        protected System.Windows.Forms.CheckBox checkBoxlog2;
     }
 }
 

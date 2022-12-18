@@ -25,9 +25,13 @@ namespace Genera_Fatture
         private Delegates delegates;
 
 
-        private String basePathOutputFile = $"C:\\Fatture\\";
+        private String basePathOutputFile = $"C:\\Users\\{Environment.UserName}\\Desktop\\Fatture\\";
         private Workbook workbookInizializzazione;
         private int progressivo;
+
+        private ToolTip toolTipInputClientiAttivi = new ToolTip();
+        private ToolTip toolTipInputAnagrafica = new ToolTip();
+
 
         public form()
         {
@@ -52,6 +56,15 @@ namespace Genera_Fatture
                 //Inizializzazione Button
                 this.buttonGeneraFatture.Enabled = false;
                 this.buttonGeneraFatture.ButtonColor = Color.Gray;
+
+                //tool tip genera fatture
+                ToolTip toolTip = new ToolTip();
+                toolTip.ToolTipTitle = "Info";
+                toolTip.SetToolTip(this.buttonGeneraFatture, "Non saranno generate le fatture dove non è presente il condominio nel file clienti attivi");
+              
+                //Inizializzazione checkbox
+                this.checkBoxLog.Checked = false;
+                this.checkBoxlog2.Checked = true;
 
                 //Inizializzazione Data -> Default primo del mese
                 DateTime now = DateTime.Now;
@@ -96,7 +109,8 @@ namespace Genera_Fatture
                 {
                     this.textBoxFileCosti.Text = openFileDialog.FileName.ToString();
                     this.InputFilePathCosti = this.textBoxFileCosti.Text;
-
+                    toolTipInputClientiAttivi.Active = true;
+                    toolTipInputClientiAttivi.SetToolTip(this.textBoxFileCosti, this.InputFilePathCosti);
                     if (!inputFilePathAnagrafica.Equals(""))
                     {
                         //UI
@@ -109,6 +123,7 @@ namespace Genera_Fatture
                 }
                 else
                 {
+                    toolTipInputClientiAttivi.Active = false;
                     this.textBoxFileCosti.Text = "";
                     this.InputFilePathCosti = "";
                     this.buttonGeneraFatture.Enabled = false;
@@ -133,12 +148,19 @@ namespace Genera_Fatture
                 {
                     this.textBoxFileAnagrafica.Text = openFileDialog.FileName.ToString();
                     this.inputFilePathAnagrafica = this.textBoxFileAnagrafica.Text;
+                    toolTipInputAnagrafica.Active = true;
+                    toolTipInputAnagrafica.SetToolTip(this.textBoxFileAnagrafica, inputFilePathAnagrafica);
 
                     if (!inputFilePathCosti.Equals(""))
                     {
+                        
                         //UI
                         this.buttonGeneraFatture.Enabled = true;
                         this.buttonGeneraFatture.ButtonColor = Color.DodgerBlue;
+                    }
+                    else
+                    {
+                        toolTipInputAnagrafica = null;
                     }
                     //clear open dialog
                     this.openFileDialog.FileName = "";
@@ -146,6 +168,7 @@ namespace Genera_Fatture
                 }
                 else
                 {
+                    toolTipInputAnagrafica.Active = false;
                     this.textBoxFileAnagrafica.Text = "";
                     this.inputFilePathAnagrafica = "";
                     this.buttonGeneraFatture.Enabled = false;
@@ -169,6 +192,8 @@ namespace Genera_Fatture
             delegates.disableEnableButtonDelegate(buttonFileCosti, false);
             delegates.disableEnableButtonDelegate(buttonFileAnagrafica, false);
             delegates.disableEnableButtonSettingDelegate(buttonSettings, false);
+            delegates.disableEnableCheckBox(checkBoxLog, false);
+            delegates.disableEnableCheckBox(checkBoxLog, false);
 
             Thread t = new Thread(
                 () => generafatture(InputFilePathCosti));
@@ -203,83 +228,88 @@ namespace Genera_Fatture
 
                         for (int i = 2; i <= rowsExcelCosti; i++)
                         {
-                            Console.WriteLine("ROW COSTI: " + i);
-
-                            // Carica file template
-                            GestioneScritturaExcelTemplateFattura excelTemplateFattura = new GestioneScritturaExcelTemplateFattura("./Data/Template.xlsx");
-
-                            //Lettura file input
-                            String amministratore = excelRicevute.retrieveAmministratore(i);
-                            String prezzo = excelRicevute.retrieveCosto(i);
                             String nomeCondominio = excelRicevute.retrieveCondominio(i);
-                            String fattura = excelRicevute.retrieveFattura(i);
-                            String data = dateTimePicker1.Value.ToString("dd/MM/yyyy");
-                            String mese = "NEL MESE DI " + dateTimePicker1.Value.ToString("MMMM");
-                            String sospeso = excelRicevute.retrieveSospesi(i);
-                            String indirizzo = "";
-                            String provincia = "";
-                            String comune = "";
-                            String cap = "";
-
-
-                            if (!fattura.Trim().Equals("N") && !fattura.Trim().Equals("NO") && sospeso.Equals(""))
+                            if (!nomeCondominio.Equals(""))
                             {
-                                for (int j = 2; j <= rowsExcelAnagrafica; ++j)
-                                {
-                                    String nomeCondominioAnagrafica = excelAnagrafica.retrieveCondominio(j);
+                                Console.WriteLine("ROW COSTI: " + i);
 
-                                    if (!nomeCondominioAnagrafica.Trim().Equals("") && nomeCondominioAnagrafica.Trim().Equals(nomeCondominio.Trim()))
+                                // Carica file template
+                                GestioneScritturaExcelTemplateFattura excelTemplateFattura = new GestioneScritturaExcelTemplateFattura("./Data/Template.xlsx");
+
+                                //Lettura file input
+                                String amministratore = excelRicevute.retrieveAmministratore(i);
+                                String prezzo = excelRicevute.retrieveCosto(i);
+                                String fattura = excelRicevute.retrieveFattura(i);
+                                String data = dateTimePicker1.Value.ToString("dd/MM/yyyy");
+                                String mese = "NEL MESE DI " + dateTimePicker1.Value.ToString("MMMM");
+                                String sospeso = excelRicevute.retrieveSospesi(i);
+                                String indirizzo = "";
+                                String provincia = "";
+                                String comune = "";
+                                String cap = "";
+                                String anno = dateTimePicker1.Value.ToString("yy");
+
+                                if (!fattura.Trim().Equals("N") && !fattura.Trim().Equals("NO") && sospeso.Equals(""))
+                                {
+                                    for (int j = 2; j <= rowsExcelAnagrafica; ++j)
                                     {
-                                        indirizzo = excelAnagrafica.retrieveIndirizzo(j);
-                                        cap = excelAnagrafica.retrieveCap(j);
-                                        comune = excelAnagrafica.retrieveComune(j);
-                                        provincia = excelAnagrafica.retrieveProvincia(j);
+                                        String nomeCondominioAnagrafica = excelAnagrafica.retrieveCondominio(j);                                      
+                                        if (!nomeCondominioAnagrafica.Trim().Equals("") && nomeCondominioAnagrafica.Trim().Equals(nomeCondominio.Trim()))
+                                        {
+                                            indirizzo = excelAnagrafica.retrieveIndirizzo(j);
+                                            cap = excelAnagrafica.retrieveCap(j);
+                                            comune = excelAnagrafica.retrieveComune(j);
+                                            provincia = excelAnagrafica.retrieveProvincia(j);
+                                        }
                                     }
-                                }
-                                ++progressivo;
-                                bool valid = CheckFieldAndLog(i, progressivo, amministratore, prezzo, nomeCondominio, cap, provincia, indirizzo, comune);
-                                excelTemplateFattura.writeInFile(progressivo.ToString(), TipologiaWriteTemplateExcel.NUMERO_FATTURA);
-                                excelTemplateFattura.writeInFile(data.ToUpper(), TipologiaWriteTemplateExcel.DATA_FATTURA);
-                                excelTemplateFattura.writeInFile(prezzo, TipologiaWriteTemplateExcel.COSTO_FATTURA);
-                                excelTemplateFattura.writeInFile(mese.ToUpper(), TipologiaWriteTemplateExcel.MESE_FATTURA);
-                                excelTemplateFattura.writeInFile(nomeCondominio.ToUpper(), TipologiaWriteTemplateExcel.NOME_CONDOMINIO_FATTURA);
-                                excelTemplateFattura.writeInFile(indirizzo.ToUpper(), TipologiaWriteTemplateExcel.VIA_CONDOMINIO_FATTURA);
-                                excelTemplateFattura.writeInFile("/" + dateTimePicker1.Value.ToString("yy") + " S.R.L", TipologiaWriteTemplateExcel.ANNO_FATTURA);
-                                excelTemplateFattura.writeInFile(comune + " (" + provincia.ToUpper() + "), " + cap.ToUpper(), TipologiaWriteTemplateExcel.COMUNE_CAP_PROVINCIA_CONDOMINIO_FATTURA);
+                                    ++progressivo;
+                                    bool valid = CheckFieldAndLog(i, progressivo, amministratore, prezzo, nomeCondominio, cap, provincia, indirizzo, comune);
+                                    excelTemplateFattura.writeInFile(progressivo.ToString(), TipologiaWriteTemplateExcel.NUMERO_FATTURA);
+                                    excelTemplateFattura.writeInFile(data.ToUpper(), TipologiaWriteTemplateExcel.DATA_FATTURA);
+                                    excelTemplateFattura.writeInFile(prezzo, TipologiaWriteTemplateExcel.COSTO_FATTURA);
+                                    excelTemplateFattura.writeInFile(mese.ToUpper(), TipologiaWriteTemplateExcel.MESE_FATTURA);
+                                    excelTemplateFattura.writeInFile(nomeCondominio.ToUpper(), TipologiaWriteTemplateExcel.NOME_CONDOMINIO_FATTURA);
+                                    excelTemplateFattura.writeInFile(indirizzo.ToUpper(), TipologiaWriteTemplateExcel.VIA_CONDOMINIO_FATTURA);
+                                    excelTemplateFattura.writeInFile("/" + anno + " S.R.L", TipologiaWriteTemplateExcel.ANNO_FATTURA);
+                                    excelTemplateFattura.writeInFile(comune + " (" + provincia.ToUpper() + "), " + cap.ToUpper(), TipologiaWriteTemplateExcel.COMUNE_CAP_PROVINCIA_CONDOMINIO_FATTURA);
 
-                                String nomeFile = progressivo + "_" + amministratore + ".xlsx";
-                                excelTemplateFattura.SalvataggioFile(folderOutput, nomeFile);
-                                excelTemplateFattura = null;
+                                    String nomeFile = progressivo + "_" + nomeCondominio + "_" + anno + ".xlsx";
+                                    excelTemplateFattura.SalvataggioFile(folderOutput, nomeFile);
+                                    excelTemplateFattura = null;
 
 
-                                if (!valid)
-                                {
-                                    validazioneGenerale = false;
-                                }
+                                    if (!valid)
+                                    {
+                                        validazioneGenerale = false;
+                                    }
 
-                                delegates.changeNumberInNumericUpAndDownDelegate(numericUpDownNumeroFattura, progressivo);
-                            }
-                            else
-                            {
-                                if (!sospeso.Equals(""))
-                                {
-                                    delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Cliente alla riga " + i + " è stato saltato perché il campo sospesi non è vuoto");
+                                    delegates.changeNumberInNumericUpAndDownDelegate(numericUpDownNumeroFattura, progressivo);
                                 }
                                 else
                                 {
-                                    delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Cliente alla riga " + i + " è stato saltato perché il campo fattura è stato impostato su 'N' o 'NO'");
+                                    if (!sospeso.Equals("") && this.checkBoxLog.Checked == true)
+                                    {
+                                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, $"({nomeCondominio}) - riga [{i}] - è stato saltato perché il campo sospesi non è vuoto");
+                                    }
+                                    else
+                                    {
+                                        if (this.checkBoxlog2.Checked == true)
+                                        {
+                                            delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, $"({nomeCondominio}) - riga [{i}] - è stato saltato perché il campo fattura è stato impostato su 'N' o 'NO'");
+                                        }
+                                    }
                                 }
                             }
                         }
 
-                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi in C:\\Fatture)");
+                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi fatture in " + basePathOutputFile+ " )");
 
                         singletonFile.setNumeroUltimaFattura(progressivo.ToString());
 
                         this.ClearUI();
                         if (validazioneGenerale == false)
                         {
-                            this.Invoke(new Action(() => MessageBox.Show(this, "Attenzione alcune fatture non sono state generate correttamente perché avevano dei campi mancanti. Nel log applicativo trovi maggiori informazioni per correggerle manualmente", "Warn", MessageBoxButtons.OK, MessageBoxIcon.Warning)));
+                            this.Invoke(new Action(() => MessageBox.Show(this, "Attenzione alcune fatture non sono state generate correttamente perché avevano dei campi mancanti o non validi. Nel log applicativo trovi maggiori informazioni per correggerle manualmente", "Warn", MessageBoxButtons.OK, MessageBoxIcon.Warning)));
                         }
                     }
                     else
@@ -321,8 +351,12 @@ namespace Genera_Fatture
                 delegates.disableEnableButtonDelegate(buttonFileAnagrafica, true);
                 delegates.disableEnableButtonSettingDelegate(buttonSettings, true);
                 delegates.disableEnableButtonDelegate(buttonGeneraFatture, false);
+                delegates.disableEnableCheckBox(checkBoxLog, true);
+                delegates.disableEnableCheckBox(checkBoxLog, true);
                 delegates.changeTextInTextBoxDelegate(textBoxFileCosti, "");
                 delegates.changeTextInTextBoxDelegate(textBoxFileAnagrafica, "");
+                toolTipInputAnagrafica.Active = false;
+                toolTipInputClientiAttivi.Active = false;
                 this.InputFilePathCosti = "";
                 this.InputFilePathAnagrafica = "";
             }
@@ -335,18 +369,31 @@ namespace Genera_Fatture
         private bool CheckFieldAndLog(int riga, int numeroFattura, String amministratore, String prezzo, String nomeCondominio, String cap, String provincia, String indirizzo, String comune)
         {
             bool valid = true;
-            String log = $"Cliente alla riga {riga} Numero Fattura [{ numeroFattura }] - Non sono stati trovati i seguenti campi: |";
+            String log = $"({nomeCondominio}) - riga [{riga}] - Numero Fattura [{ numeroFattura }] - Valori non trovati o non validi per i seguenti campi: |";
 
-            if (amministratore.Equals(""))
-            {
-                valid = false;
-                log += " AMMINISTRATORE |";
-            }
+            //if (amministratore.Equals(""))
+            //{
+            //    valid = false;
+            //    log += " AMMINISTRATORE |";
+            //}
 
             if (prezzo.Equals(""))
             {
                 valid = false;
                 log += " COSTO |";
+            }
+            else
+            {
+                try
+                {
+                    double prezzoValido = Math.Round(float.Parse(prezzo), 2);
+                }
+                catch (Exception ex)
+                {
+                    prezzo = "";
+                    valid = false;
+                    log += " COSTO |";
+                }
             }
 
             if (nomeCondominio.Equals(""))
