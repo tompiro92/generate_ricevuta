@@ -18,15 +18,11 @@ namespace Genera_Fatture
         public string InputFilePathCosti { get => inputFilePathCosti; set => inputFilePathCosti = value; }
         public string InputFilePathAnagrafica { get => inputFilePathAnagrafica; set => inputFilePathAnagrafica = value; }
 
-        private Dictionary<String, int> dictionary;
-
         private SingletonFileInizializzazione singletonFile;
 
         private Delegates delegates;
 
-
-        private String basePathOutputFile = $"C:\\Users\\{Environment.UserName}\\Desktop\\Fatture\\";
-        private Workbook workbookInizializzazione;
+        private String basePathOutputFile; // = $"C:\\Users\\{Environment.UserName}\\Desktop\\Fatture\\";
         private int progressivo;
 
         private ToolTip toolTipInputClientiAttivi = new ToolTip();
@@ -35,6 +31,7 @@ namespace Genera_Fatture
 
         public form()
         {
+            this.basePathOutputFile = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)+"\\Fatture\\";
             InitializeComponent();
             CustomInizializeComponent();
             Console.WriteLine("LOADING");
@@ -51,7 +48,8 @@ namespace Genera_Fatture
                 this.openFileDialog.Filter = "Excel Files |*.xlsx";
                 this.openFileDialog.Multiselect = false;
                 this.openFileDialog.FileName = "";
-                this.openFileDialog.InitialDirectory = $"C:\\users\\{System.Environment.UserName}\\Desktop";
+                //$"C:\\users\\{System.Environment.UserName}\\Desktop";
+                this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
                 //Inizializzazione Button
                 this.buttonGeneraFatture.Enabled = false;
@@ -119,7 +117,9 @@ namespace Genera_Fatture
                     }
                     //clear open dialog
                     this.openFileDialog.FileName = "";
-                    this.openFileDialog.InitialDirectory = $"C:\\users\\{System.Environment.UserName}\\Desktop";
+                    //$"C:\\users\\{System.Environment.UserName}\\Desktop";
+                    this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
                 }
                 else
                 {
@@ -130,7 +130,8 @@ namespace Genera_Fatture
                     this.buttonGeneraFatture.ButtonColor = Color.Gray;
                     //clear open dialog
                     this.openFileDialog.FileName = "";
-                    this.openFileDialog.InitialDirectory = $"C:\\users\\{System.Environment.UserName}\\Desktop";
+                    //$"C:\\users\\{System.Environment.UserName}\\Desktop"
+                    this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);            
                     MessageBox.Show(this, "Nessun file selezionato", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -164,7 +165,9 @@ namespace Genera_Fatture
                     }
                     //clear open dialog
                     this.openFileDialog.FileName = "";
-                    this.openFileDialog.InitialDirectory = $"C:\\users\\{System.Environment.UserName}\\Desktop";
+                    //$"C:\\users\\{System.Environment.UserName}\\Desktop"
+                    this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
                 }
                 else
                 {
@@ -175,7 +178,8 @@ namespace Genera_Fatture
                     this.buttonGeneraFatture.ButtonColor = Color.Gray;
                     //clear open dialog
                     this.openFileDialog.FileName = "";
-                    this.openFileDialog.InitialDirectory = $"C:\\users\\{System.Environment.UserName}\\Desktop";
+                    //$"C:\\users\\{System.Environment.UserName}\\Desktop"
+                    this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
                     MessageBox.Show(this, "Nessun file selezionato", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -217,6 +221,7 @@ namespace Genera_Fatture
 
                 int rowsExcelCosti = excelRicevute.getRowCount();
                 int rowsExcelAnagrafica = excelAnagrafica.getRowCount();
+                int countRowEmpty = 0;
 
                 if (rowsExcelCosti > 1 && rowsExcelAnagrafica > 1)
                 {
@@ -225,12 +230,18 @@ namespace Genera_Fatture
 
                     if (!Directory.Exists(folderOutput))
                     {
-
+                       
                         for (int i = 2; i <= rowsExcelCosti; i++)
                         {
+                            //100 righe vuote consecutive => Esci -> Limite per l'EOF di excel errato.
+                            if(countRowEmpty == 100)
+                            {
+                                break;
+                            }
                             String nomeCondominio = excelRicevute.retrieveCondominio(i);
                             if (!nomeCondominio.Equals(""))
                             {
+                                countRowEmpty = 0;
                                 Console.WriteLine("ROW COSTI: " + i);
 
                                 // Carica file template
@@ -299,6 +310,11 @@ namespace Genera_Fatture
                                         }
                                     }
                                 }
+                            }
+                            else
+                            {
+                                Console.WriteLine("ROW COSTI: " + i + " SALTATA PERCHÈ VUOTA");
+                                countRowEmpty++;
                             }
                         }
 
