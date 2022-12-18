@@ -221,7 +221,9 @@ namespace Genera_Fatture
 
                 int rowsExcelCosti = excelRicevute.getRowCount();
                 int rowsExcelAnagrafica = excelAnagrafica.getRowCount();
-                int countRowEmpty = 0;
+                Console.WriteLine("ROWS EXCELT ANAGRAFICA: " + rowsExcelAnagrafica);
+                int countRowClientiAttivitEmpty = 0;
+                int countRowAnagraficaEmpty = 0;
 
                 if (rowsExcelCosti > 1 && rowsExcelAnagrafica > 1)
                 {
@@ -234,14 +236,14 @@ namespace Genera_Fatture
                         for (int i = 2; i <= rowsExcelCosti; i++)
                         {
                             //100 righe vuote consecutive => Esci -> Limite per l'EOF di excel errato.
-                            if(countRowEmpty == 100)
+                            if(countRowClientiAttivitEmpty == 50)
                             {
                                 break;
                             }
                             String nomeCondominio = excelRicevute.retrieveCondominio(i);
                             if (!nomeCondominio.Equals(""))
                             {
-                                countRowEmpty = 0;
+                                countRowClientiAttivitEmpty = 0;
                                 Console.WriteLine("ROW COSTI: " + i);
 
                                 // Carica file template
@@ -264,13 +266,28 @@ namespace Genera_Fatture
                                 {
                                     for (int j = 2; j <= rowsExcelAnagrafica; ++j)
                                     {
-                                        String nomeCondominioAnagrafica = excelAnagrafica.retrieveCondominio(j);                                      
-                                        if (!nomeCondominioAnagrafica.Trim().Equals("") && nomeCondominioAnagrafica.Trim().Equals(nomeCondominio.Trim()))
+                                        String nomeCondominioAnagrafica = excelAnagrafica.retrieveCondominio(j);
+                                        if (!nomeCondominioAnagrafica.Trim().Equals(""))
                                         {
-                                            indirizzo = excelAnagrafica.retrieveIndirizzo(j);
-                                            cap = excelAnagrafica.retrieveCap(j);
-                                            comune = excelAnagrafica.retrieveComune(j);
-                                            provincia = excelAnagrafica.retrieveProvincia(j);
+                                            countRowAnagraficaEmpty = 0;
+                                            if (nomeCondominioAnagrafica.Trim().Equals(nomeCondominio.Trim()))
+                                            {
+                                                indirizzo = excelAnagrafica.retrieveIndirizzo(j);
+                                                cap = excelAnagrafica.retrieveCap(j);
+                                                comune = excelAnagrafica.retrieveComune(j);
+                                                provincia = excelAnagrafica.retrieveProvincia(j);
+                                                break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            countRowAnagraficaEmpty++;
+                                        }
+                                        //50 righe vuote consecutive => Esci -> Limite per l'EOF di excel errato.
+                                        if (countRowAnagraficaEmpty >= 50)
+                                        {
+                                            //System.Console.WriteLine("Trovate 50 righe vuote nel file anagrafica. Fermato alla row: "+ j);
+                                            break;
                                         }
                                     }
                                     ++progressivo;
@@ -314,7 +331,7 @@ namespace Genera_Fatture
                             else
                             {
                                 Console.WriteLine("ROW COSTI: " + i + " SALTATA PERCHÈ VUOTA");
-                                countRowEmpty++;
+                                countRowClientiAttivitEmpty++;
                             }
                         }
 
