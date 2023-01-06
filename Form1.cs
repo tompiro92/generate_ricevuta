@@ -15,7 +15,6 @@ namespace Genera_Fatture
     {
         private String inputFilePathCosti = "";
         private String inputFilePathAnagrafica = "";
-        private String inputFilePathResoconto = "";
         public string InputFilePathCosti { get => inputFilePathCosti; set => inputFilePathCosti = value; }
         public string InputFilePathAnagrafica { get => inputFilePathAnagrafica; set => inputFilePathAnagrafica = value; }
 
@@ -28,13 +27,12 @@ namespace Genera_Fatture
 
         private ToolTip toolTipInputClientiAttivi = new ToolTip();
         private ToolTip toolTipInputAnagrafica = new ToolTip();
-        private ToolTip toolTipInputResoconto = new ToolTip();
 
         private const String DESCRIZIONE_TEMPLATE = "SERVIZIO DI MANUTENZIONE E/O TRAPSORTO EFFETTUATO PRESSO IL VS CONDOMINIO NEL MESE DI ";
 
         public form()
         {
-            this.basePathOutputFile = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)+"\\Fatture\\";
+            this.basePathOutputFile = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\Fatture\\";
             InitializeComponent();
             CustomInizializeComponent();
             Console.WriteLine("LOADING");
@@ -62,7 +60,7 @@ namespace Genera_Fatture
                 ToolTip toolTip = new ToolTip();
                 toolTip.ToolTipTitle = "Info";
                 toolTip.SetToolTip(this.buttonGeneraFatture, "Non saranno generate le fatture dove non è presente il condominio nel file clienti attivi");
-              
+
                 //Inizializzazione checkbox
                 this.checkBoxLog.Checked = false;
                 this.checkBoxlog2.Checked = true;
@@ -134,13 +132,13 @@ namespace Genera_Fatture
                     //clear open dialog
                     this.openFileDialog.FileName = "";
                     //$"C:\\users\\{System.Environment.UserName}\\Desktop"
-                    this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);            
+                    this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
                     MessageBox.Show(this, "Nessun file selezionato", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -156,7 +154,7 @@ namespace Genera_Fatture
                     toolTipInputAnagrafica.SetToolTip(this.textBoxFileAnagrafica, inputFilePathAnagrafica);
 
                     if (!inputFilePathCosti.Equals(""))
-                    {                      
+                    {
                         //UI
                         this.buttonGeneraFatture.Enabled = true;
                         this.buttonGeneraFatture.ButtonColor = Color.DodgerBlue;
@@ -187,12 +185,13 @@ namespace Genera_Fatture
                     MessageBox.Show(this, "Nessun file selezionato", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        /*
         private void buttonFileResoconto_Click(object sender, EventArgs e)
         {
             try
@@ -227,7 +226,7 @@ namespace Genera_Fatture
                 MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        */
         private void buttonGeneraFatture_Click(object sender, EventArgs e)
         {
 
@@ -258,7 +257,7 @@ namespace Genera_Fatture
                 GestioneLetturaExcelAnagrafica excelAnagrafica = new GestioneLetturaExcelAnagrafica(inputFilePathAnagrafica);
 
                 //Carica file 
-                GestioneScritturaResoconto gestioneScritturaResoconto = new GestioneScritturaResoconto(inputFilePathResoconto);
+                GestioneScritturaResoconto gestioneScritturaResoconto = new GestioneScritturaResoconto("./Data/TEMPLATE_RESOCONTO.xlsx");
 
                 int rowsExcelCosti = excelRicevute.getRowCount();
                 int rowsExcelAnagrafica = excelAnagrafica.getRowCount();
@@ -273,11 +272,11 @@ namespace Genera_Fatture
 
                     if (!Directory.Exists(folderOutput))
                     {
-                       
+
                         for (int i = 2; i <= rowsExcelCosti; i++)
                         {
                             //100 righe vuote consecutive => Esci -> Limite per l'EOF di excel errato.
-                            if(countRowClientiAttivitEmpty == 50)
+                            if (countRowClientiAttivitEmpty == 50)
                             {
                                 break;
                             }
@@ -354,21 +353,20 @@ namespace Genera_Fatture
                                     excelTemplateFattura.SalvataggioFile(folderOutput, nomeFile);
                                     excelTemplateFattura = null;
 
-                                    if (gestioneScritturaResoconto.Enabled == true)
-                                    {
-                                        String descrizione2 = "R." + progressivo + "/" + anno + " SRL" + (costoPulizie != 0 ? " PULIZIE +" : "") + (costoBidoni != 0 ? " BIDONI +" : "") + (costoGiardini != 0 ? " GIARDINI +" : "") + (costoPorta != 0 ? " PORTA A PORTA +" : "");
-                                        String finalDescrizione;
-                                        if (descrizione2.Contains("+"))
-                                        {
-                                            finalDescrizione = descrizione2.Substring(0, descrizione2.Length - 2);
-                                        }
-                                        else
-                                        {
-                                            finalDescrizione = descrizione2;
-                                        }
 
-                                        gestioneScritturaResoconto.writeInFile(data.ToUpper(), amministratore, nomeCondominio, finalDescrizione, (costoPulizie + costoBidoni + costoPorta + costoGiardini));
+                                    String descrizione2 = "R." + progressivo + "/" + anno + " SRL" + (costoPulizie != 0 ? " PULIZIE +" : "") + (costoBidoni != 0 ? " BIDONI +" : "") + (costoGiardini != 0 ? " GIARDINI +" : "") + (costoPorta != 0 ? " PORTA A PORTA +" : "");
+                                    String finalDescrizione;
+                                    if (descrizione2.Contains("+"))
+                                    {
+                                        finalDescrizione = descrizione2.Substring(0, descrizione2.Length - 2);
                                     }
+                                    else
+                                    {
+                                        finalDescrizione = descrizione2;
+                                    }
+
+                                    gestioneScritturaResoconto.writeInFile(data.ToUpper(), amministratore, nomeCondominio, finalDescrizione, (costoPulizie + costoBidoni + costoPorta + costoGiardini));
+
 
                                     if (!valid)
                                     {
@@ -397,12 +395,12 @@ namespace Genera_Fatture
                                 countRowClientiAttivitEmpty++;
                             }
                         }
-                        if(gestioneScritturaResoconto.Enabled == true) {
-                            gestioneScritturaResoconto.SalvataggioFile();
-                        }
-                        
+
+                        gestioneScritturaResoconto.SalvataggioFile(folderOutput, "00_RESOCONTO_" + dateTimePicker1.Value.ToString("MMMM").ToUpper()+".xlsx");
+
+
                         singletonFile.setNumeroUltimaFattura(progressivo.ToString());
-                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi fatture in " + basePathOutputFile+ " )");
+                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi fatture in " + basePathOutputFile + " )");
 
                         this.ClearUI();
                         if (validazioneGenerale == false)
@@ -434,7 +432,7 @@ namespace Genera_Fatture
             }
             catch (Exception ex)
             {
-                delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata con errore. Message: \n"+ ex.Message + "\nStackTrace: "+ex.StackTrace);
+                delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata con errore. Message: \n" + ex.Message + "\nStackTrace: " + ex.StackTrace);
                 Console.WriteLine(ex.Message);
                 this.Invoke(new Action(() => MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)));
                 ClearUI();
@@ -446,7 +444,7 @@ namespace Genera_Fatture
         {
             String customDescrizione = "SERVIZIO DI ";
 
-            if(costoPulizie.Equals(0) && costoBidoni.Equals(0) && costoGiardini.Equals(0))
+            if (costoPulizie.Equals(0) && costoBidoni.Equals(0) && costoGiardini.Equals(0))
             {
                 return DESCRIZIONE_TEMPLATE + mese.ToUpper();
             }
@@ -495,7 +493,7 @@ namespace Genera_Fatture
                 this.InputFilePathCosti = "";
                 this.InputFilePathAnagrafica = "";
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

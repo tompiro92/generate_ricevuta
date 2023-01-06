@@ -63,39 +63,9 @@ namespace Genera_Fatture.Properties {
         /// <summary>
         ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap BrillaTuttoSrl {
-            get {
-                object obj = ResourceManager.GetObject("BrillaTuttoSrl", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap icons8_automatico_100 {
             get {
-                object obj = ResourceManager.GetObject("icons8-automatico-100", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap impostazione {
-            get {
-                object obj = ResourceManager.GetObject("impostazione", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap LogoImpresaPulizie {
-            get {
-                object obj = ResourceManager.GetObject("LogoImpresaPulizie", resourceCulture);
+                object obj = ResourceManager.GetObject("icons8_automatico_100", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

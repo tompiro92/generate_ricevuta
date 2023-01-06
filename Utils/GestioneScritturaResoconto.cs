@@ -20,36 +20,32 @@ namespace Genera_Fatture.Utils
         private int COL_DESCRIZIONE = 4;
         private int COL_COSTO = 5;
 
-        public bool Enabled { get => enabled; set => enabled = value; }
-
         public GestioneScritturaResoconto(String pathFile)
         {
-            if (!pathFile.Equals(""))
+
+            try
             {
-                try
-                {
-                    this.Enabled = true;
-                    this.workbook = new Workbook();
-                    this.workbook.LoadFromFile(pathFile);
-                    //only on sheet 0 for now
-                    this.worksheet = workbook.Worksheets[0];
-                    this.lastRow = calculateLastRow();
-                }
-                catch (Exception ex)
-                {
-                    this.Enabled = false;
-                }
+                this.workbook = new Workbook();
+                this.workbook.LoadFromFile(pathFile);
+                //only on sheet 0 for now
+                this.worksheet = workbook.Worksheets[0];
+                this.lastRow = calculateLastRow();
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Impossibile aprire l'excel resoconto. Error: " + ex.Message + ". \nStackTrace: "+ex.StackTrace);
+            }
+
         }
 
         private int calculateLastRow()
         {
             int rowCount = worksheet.Rows.Count();
-            int indexLastRow=0;
+            int indexLastRow = 0;
 
-            for(int i = 1; i <= rowCount ; ++i)
+            for (int i = 1; i <= rowCount; ++i)
             {
-                if(!worksheet[i, COL_DATA_FATTURA].Value.Equals("") && !worksheet[i, COL_AMMINISTRATORE].Value.Equals(""))
+                if (!worksheet[i, COL_DATA_FATTURA].Value.Equals("") && !worksheet[i, COL_AMMINISTRATORE].Value.Equals(""))
                 {
                     indexLastRow++;
                 }
@@ -58,13 +54,14 @@ namespace Genera_Fatture.Utils
             return indexLastRow;
         }
 
-        public void SalvataggioFile()
+        public void SalvataggioFile(String pathFolder, String nomeFile)
         {
-            if (workbook != null)
-            {
-                workbook.Save();
-                workbook = null;
-            }
+
+            Directory.CreateDirectory(pathFolder);
+            workbook.SaveToFile(pathFolder + "\\" + nomeFile);
+            workbook = null;
+            worksheet = null;
+
         }
 
         public void writeInFile(String dataFattura, String amministratore, String condominio, String descrizione, Double costo)
@@ -78,17 +75,11 @@ namespace Genera_Fatture.Utils
                 worksheet[lastRow, COL_DESCRIZIONE].Value = descrizione;
                 worksheet[lastRow, COL_COSTO].NumberFormat = ("0.00 €");
                 worksheet[lastRow, COL_COSTO].Value2 = costo; //0 se non è calcolabile
-                if(costo <= 0)
+                if (costo <= 0)
                 {
                     worksheet[lastRow, COL_COSTO].Style.Color = Color.Red;
                 }
             }
-        }
-
-        public void writeSomma()
-        {
-            lastRow += 2;
-
         }
     }
 }
