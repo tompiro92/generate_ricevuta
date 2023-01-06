@@ -81,25 +81,41 @@ namespace Genera_Fatture.Utils
                 {
                     return workbook.Worksheets[0][8, 2] != null ? workbook.Worksheets[0][8, 2].Value.Trim().ToString() : "";
                 }
-                else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_CONDOMINIO))
+                else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PULIZIE))
+                {
+                    return workbook.Worksheets[0][9, 2] != null ? workbook.Worksheets[0][9, 2].Value.Trim().ToString() : "";
+                }
+                else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_BIDONI))
+                {
+                    return workbook.Worksheets[0][10, 2] != null ? workbook.Worksheets[0][10, 2].Value.Trim().ToString() : "";
+                }
+                else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_GIARDINI))
                 {
                     return workbook.Worksheets[0][11, 2] != null ? workbook.Worksheets[0][11, 2].Value.Trim().ToString() : "";
                 }
-                else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_INDIRIZZO))
+                else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PORTA_A_PORTA))
                 {
                     return workbook.Worksheets[0][12, 2] != null ? workbook.Worksheets[0][12, 2].Value.Trim().ToString() : "";
                 }
+                else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_CONDOMINIO))
+                {
+                    return workbook.Worksheets[0][4, 6] != null ? workbook.Worksheets[0][4, 6].Value.Trim().ToString() : "";
+                }
+                else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_INDIRIZZO))
+                {
+                    return workbook.Worksheets[0][5, 6] != null ? workbook.Worksheets[0][5, 6].Value.Trim().ToString() : "";
+                }
                 else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_CAP))
                 {
-                    return workbook.Worksheets[0][13, 2] != null ? workbook.Worksheets[0][13, 2].Value.Trim().ToString() : "";
+                    return workbook.Worksheets[0][6, 6] != null ? workbook.Worksheets[0][6, 6].Value.Trim().ToString() : "";
                 }
                 else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_COMUNE))
                 {
-                    return workbook.Worksheets[0][14, 2] != null ? workbook.Worksheets[0][14, 2].Value.Trim().ToString() : "";
+                    return workbook.Worksheets[0][7, 6] != null ? workbook.Worksheets[0][7, 6].Value.Trim().ToString() : "";
                 }
                 else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_PROVINCIA))
                 {
-                    return workbook.Worksheets[0][15, 2] != null ? workbook.Worksheets[0][15, 2].Value.Trim().ToString() : "";
+                    return workbook.Worksheets[0][8, 6] != null ? workbook.Worksheets[0][8, 6].Value.Trim().ToString() : "";
                 }
                 else {
                     throw new Exception("VALORE NON VALIDO");
@@ -116,43 +132,54 @@ namespace Genera_Fatture.Utils
             else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_FATTURA))
             {
                 workbook.Worksheets[0][5, 2].Value = value.Trim();
-
             }
             else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_SOSPESI))
             {
                 workbook.Worksheets[0][6, 2].Value = value.Trim();
-
             }
             else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_CONDOMINIO))
             {
                 workbook.Worksheets[0][7, 2].Value = value.Trim();
-
             }
             else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO))
             {
                 workbook.Worksheets[0][8, 2].Value = value.Trim();
-
             }
-            else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_CONDOMINIO))
+            else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PULIZIE))
+            {
+                workbook.Worksheets[0][9, 2].Value = value.Trim();
+            }
+            else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_BIDONI))
+            {
+                workbook.Worksheets[0][10, 2].Value = value.Trim();
+            }
+            else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_GIARDINI))
             {
                 workbook.Worksheets[0][11, 2].Value = value.Trim();
-
             }
-            else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_INDIRIZZO))
+            else if (valueEnum.Equals(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PORTA_A_PORTA))
             {
                 workbook.Worksheets[0][12, 2].Value = value.Trim();
             }
+            else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_CONDOMINIO))
+            {
+                workbook.Worksheets[0][4, 6].Value = value.Trim();
+            }
+            else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_INDIRIZZO))
+            {
+                workbook.Worksheets[0][5, 6].Value = value.Trim();
+            }
             else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_CAP))
             {
-                workbook.Worksheets[0][13, 2].Value = value.Trim();
+                workbook.Worksheets[0][6, 6].Value = value.Trim();
             }
             else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_COMUNE))
             {
-                workbook.Worksheets[0][14, 2].Value = value.Trim();
+                workbook.Worksheets[0][7, 6].Value = value.Trim();
             }
             else if (valueEnum.Equals(ValueInizializzazioneEnum.ANAGRAFICA_PROVINCIA))
             {
-                workbook.Worksheets[0][15, 2].Value = value.Trim();
+                workbook.Worksheets[0][8, 6].Value = value.Trim();
             }
             else
             {

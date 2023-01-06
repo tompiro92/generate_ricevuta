@@ -15,6 +15,7 @@ namespace Genera_Fatture.Utils
         VIA_CONDOMINIO_FATTURA,
         COMUNE_CAP_PROVINCIA_CONDOMINIO_FATTURA,
         COSTO_FATTURA,
-        ANNO_FATTURA
+        ANNO_FATTURA,
+        DESCRIZIONE
     }
 }

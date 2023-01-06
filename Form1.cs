@@ -15,6 +15,7 @@ namespace Genera_Fatture
     {
         private String inputFilePathCosti = "";
         private String inputFilePathAnagrafica = "";
+        private String inputFilePathResoconto = "";
         public string InputFilePathCosti { get => inputFilePathCosti; set => inputFilePathCosti = value; }
         public string InputFilePathAnagrafica { get => inputFilePathAnagrafica; set => inputFilePathAnagrafica = value; }
 
@@ -27,7 +28,9 @@ namespace Genera_Fatture
 
         private ToolTip toolTipInputClientiAttivi = new ToolTip();
         private ToolTip toolTipInputAnagrafica = new ToolTip();
+        private ToolTip toolTipInputResoconto = new ToolTip();
 
+        private const String DESCRIZIONE_TEMPLATE = "SERVIZIO DI MANUTENZIONE E/O TRAPSORTO EFFETTUATO PRESSO IL VS CONDOMINIO NEL MESE DI ";
 
         public form()
         {
@@ -153,16 +156,17 @@ namespace Genera_Fatture
                     toolTipInputAnagrafica.SetToolTip(this.textBoxFileAnagrafica, inputFilePathAnagrafica);
 
                     if (!inputFilePathCosti.Equals(""))
-                    {
-                        
+                    {                      
                         //UI
                         this.buttonGeneraFatture.Enabled = true;
                         this.buttonGeneraFatture.ButtonColor = Color.DodgerBlue;
                     }
+                    /*
                     else
                     {
                         toolTipInputAnagrafica = null;
                     }
+                    */
                     //clear open dialog
                     this.openFileDialog.FileName = "";
                     //$"C:\\users\\{System.Environment.UserName}\\Desktop"
@@ -184,6 +188,41 @@ namespace Genera_Fatture
                 }
             }
             catch(Exception ex)
+            {
+                MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonFileResoconto_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    this.textBoxFileResoconto.Text = openFileDialog.FileName.ToString();
+                    this.inputFilePathResoconto = this.textBoxFileResoconto.Text;
+                    toolTipInputResoconto.Active = true;
+                    toolTipInputAnagrafica.SetToolTip(this.textBoxFileResoconto, inputFilePathResoconto);
+                    //clear open dialog
+                    this.openFileDialog.FileName = "";
+                    //$"C:\\users\\{System.Environment.UserName}\\Desktop"
+                    this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+
+                }
+                else
+                {
+                    toolTipInputResoconto.Active = false;
+                    this.textBoxFileResoconto.Text = "";
+                    this.inputFilePathResoconto = "";
+                    MessageBox.Show(this, "Nessun file selezionato", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                //clear open dialog
+                this.openFileDialog.FileName = "";
+                //$"C:\\users\\{System.Environment.UserName}\\Desktop"
+                this.openFileDialog.InitialDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -218,6 +257,8 @@ namespace Genera_Fatture
                 // Carica file anagrafiche clienti Input
                 GestioneLetturaExcelAnagrafica excelAnagrafica = new GestioneLetturaExcelAnagrafica(inputFilePathAnagrafica);
 
+                //Carica file 
+                GestioneScritturaResoconto gestioneScritturaResoconto = new GestioneScritturaResoconto(inputFilePathResoconto);
 
                 int rowsExcelCosti = excelRicevute.getRowCount();
                 int rowsExcelAnagrafica = excelAnagrafica.getRowCount();
@@ -254,13 +295,19 @@ namespace Genera_Fatture
                                 String prezzo = excelRicevute.retrieveCosto(i);
                                 String fattura = excelRicevute.retrieveFattura(i);
                                 String data = dateTimePicker1.Value.ToString("dd/MM/yyyy");
-                                String mese = "NEL MESE DI " + dateTimePicker1.Value.ToString("MMMM");
+                                String mese = dateTimePicker1.Value.AddMonths(-1).ToString("MMMM");
+                                String mese2 = dateTimePicker1.Value.ToString("MM");
                                 String sospeso = excelRicevute.retrieveSospesi(i);
                                 String indirizzo = "";
                                 String provincia = "";
                                 String comune = "";
                                 String cap = "";
                                 String anno = dateTimePicker1.Value.ToString("yy");
+                                Double costoPulizie = excelRicevute.retrieveCostoPulizie(i);
+                                Double costoBidoni = excelRicevute.retrieveCostoBidoni(i);
+                                Double costoGiardini = excelRicevute.retrieveCostoGiardini(i);
+                                Double costoPorta = excelRicevute.retrieveCostoPorta(i);
+                                String descrizione = generaDescrizione(costoPulizie, costoBidoni, costoGiardini, mese);
 
                                 if (!fattura.Trim().Equals("N") && !fattura.Trim().Equals("NO") && sospeso.Equals(""))
                                 {
@@ -295,16 +342,33 @@ namespace Genera_Fatture
                                     excelTemplateFattura.writeInFile(progressivo.ToString(), TipologiaWriteTemplateExcel.NUMERO_FATTURA);
                                     excelTemplateFattura.writeInFile(data.ToUpper(), TipologiaWriteTemplateExcel.DATA_FATTURA);
                                     excelTemplateFattura.writeInFile(prezzo, TipologiaWriteTemplateExcel.COSTO_FATTURA);
-                                    excelTemplateFattura.writeInFile(mese.ToUpper(), TipologiaWriteTemplateExcel.MESE_FATTURA);
+                                    //excelTemplateFattura.writeInFile(mese.ToUpper(), TipologiaWriteTemplateExcel.MESE_FATTURA);
                                     excelTemplateFattura.writeInFile(nomeCondominio.ToUpper(), TipologiaWriteTemplateExcel.NOME_CONDOMINIO_FATTURA);
                                     excelTemplateFattura.writeInFile(indirizzo.ToUpper(), TipologiaWriteTemplateExcel.VIA_CONDOMINIO_FATTURA);
                                     excelTemplateFattura.writeInFile("/" + anno + " S.R.L", TipologiaWriteTemplateExcel.ANNO_FATTURA);
                                     excelTemplateFattura.writeInFile(comune + " (" + provincia.ToUpper() + "), " + cap.ToUpper(), TipologiaWriteTemplateExcel.COMUNE_CAP_PROVINCIA_CONDOMINIO_FATTURA);
+                                    excelTemplateFattura.writeInFile(descrizione, TipologiaWriteTemplateExcel.DESCRIZIONE);
 
-                                    String nomeFile = progressivo + "_" + nomeCondominio + "_" + anno + ".xlsx";
+                                    //String nomeFile2 = progressivo + "_" + nomeCondominio + "_" + anno + ".xlsx";
+                                    String nomeFile = "R." + progressivo + "-" + anno + "_" + nomeCondominio + ".xlsx";
                                     excelTemplateFattura.SalvataggioFile(folderOutput, nomeFile);
                                     excelTemplateFattura = null;
 
+                                    if (gestioneScritturaResoconto.Enabled == true)
+                                    {
+                                        String descrizione2 = "R." + progressivo + "/" + anno + " SRL" + (costoPulizie != 0 ? " PULIZIE +" : "") + (costoBidoni != 0 ? " BIDONI +" : "") + (costoGiardini != 0 ? " GIARDINI +" : "") + (costoPorta != 0 ? " PORTA A PORTA +" : "");
+                                        String finalDescrizione;
+                                        if (descrizione2.Contains("+"))
+                                        {
+                                            finalDescrizione = descrizione2.Substring(0, descrizione2.Length - 2);
+                                        }
+                                        else
+                                        {
+                                            finalDescrizione = descrizione2;
+                                        }
+
+                                        gestioneScritturaResoconto.writeInFile(data.ToUpper(), amministratore, nomeCondominio, finalDescrizione, (costoPulizie + costoBidoni + costoPorta + costoGiardini));
+                                    }
 
                                     if (!valid)
                                     {
@@ -330,14 +394,15 @@ namespace Genera_Fatture
                             }
                             else
                             {
-                                Console.WriteLine("ROW COSTI: " + i + " SALTATA PERCHÈ VUOTA");
                                 countRowClientiAttivitEmpty++;
                             }
                         }
-
-                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi fatture in " + basePathOutputFile+ " )");
-
+                        if(gestioneScritturaResoconto.Enabled == true) {
+                            gestioneScritturaResoconto.SalvataggioFile();
+                        }
+                        
                         singletonFile.setNumeroUltimaFattura(progressivo.ToString());
+                        delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata. (Vedi fatture in " + basePathOutputFile+ " )");
 
                         this.ClearUI();
                         if (validazioneGenerale == false)
@@ -369,11 +434,48 @@ namespace Genera_Fatture
             }
             catch (Exception ex)
             {
-                delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata con errore.");
+                delegates.appendTextWithDateTimeInRichTextBoxLogDelegate(textBoxLog, "Generazione Fatture Terminata con errore. Message: \n"+ ex.Message + "\nStackTrace: "+ex.StackTrace);
+                Console.WriteLine(ex.Message);
                 this.Invoke(new Action(() => MessageBox.Show(this, "Errore inaspettato. Se il problema persiste contattare il proprietario del software: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)));
                 ClearUI();
             }
 
+        }
+
+        private string generaDescrizione(double costoPulizie, double costoBidoni, double costoGiardini, String mese)
+        {
+            String customDescrizione = "SERVIZIO DI ";
+
+            if(costoPulizie.Equals(0) && costoBidoni.Equals(0) && costoGiardini.Equals(0))
+            {
+                return DESCRIZIONE_TEMPLATE + mese.ToUpper();
+            }
+
+            else
+            {
+                if (!costoGiardini.Equals(0))
+                {
+                    customDescrizione += "MANUTENZIONE AREE VERDI,";
+                }
+                if (!costoBidoni.Equals(0))
+                {
+                    customDescrizione += " TRASPORTO BIDONI,";
+                }
+                if (!costoPulizie.Equals(0))
+                {
+                    customDescrizione += " PULIZIE,";
+                }
+                customDescrizione = customDescrizione.Substring(0, customDescrizione.Length - 1);
+                customDescrizione += " EFFETTUATO PRESSO IL VS CONDOMINIO NEL MESE DI " + mese.ToUpper();
+                if (customDescrizione.Contains(","))
+                {
+                    int lastIndexComma = customDescrizione.LastIndexOf(",");
+                    String result = customDescrizione.Remove(lastIndexComma, 1).Insert(lastIndexComma + 1, " E ");
+                    return result;
+                }
+
+                return customDescrizione;
+            }
         }
 
         private void ClearUI()
@@ -486,5 +588,6 @@ namespace Genera_Fatture
             Console.WriteLine("LOADED");
             this.Opacity = 1;
         }
+
     }
 }

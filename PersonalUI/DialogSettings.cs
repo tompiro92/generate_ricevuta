@@ -24,7 +24,12 @@ namespace Genera_Fatture.PersonalUI
             numericUpDownSospesi.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_SOSPESI));
             numericUpDownCondominioAttivi.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_CONDOMINIO));
             numericUpDownCosto.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO));
-            
+
+            numericUpDownPulizie.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PULIZIE));
+            numericUpDownBidoni.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_BIDONI));
+            numericUpDownGiardini.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_GIARDINI));
+            numericUpDownPaP.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PORTA_A_PORTA));
+
             numericUpDownCondominioAnagrafica.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_CONDOMINIO));
             numericUpDownIndirizzo.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_INDIRIZZO));
             numericUpDownCAP.Value = int.Parse(singletonFileInizializzazione.getIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_CAP));
@@ -42,6 +47,11 @@ namespace Genera_Fatture.PersonalUI
                 singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_SOSPESI, numericUpDownSospesi.Value.ToString());
                 singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_CONDOMINIO, numericUpDownCondominioAttivi.Value.ToString());
                 singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO, numericUpDownCosto.Value.ToString());
+                
+                singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PULIZIE, numericUpDownPulizie.Value.ToString());
+                singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_BIDONI, numericUpDownBidoni.Value.ToString());
+                singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_GIARDINI, numericUpDownGiardini.Value.ToString());
+                singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.CLIENTI_ATTIVI_COSTO_PORTA_A_PORTA, numericUpDownPaP.Value.ToString());
 
                 singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_CONDOMINIO, numericUpDownCondominioAnagrafica.Value.ToString());
                 singletonFileInizializzazione.setIndexOf(ValueInizializzazioneEnum.ANAGRAFICA_INDIRIZZO, numericUpDownIndirizzo.Value.ToString());

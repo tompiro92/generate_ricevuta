@@ -99,5 +99,15 @@ namespace Genera_Fatture.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Cerca una risorsa localizzata di tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap MARCHIO_BRILLATUTTO_NEW {
+            get {
+                object obj = ResourceManager.GetObject("MARCHIO BRILLATUTTO NEW", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>BrillaTuttoSrl.ico</ApplicationIcon>
+    <ApplicationIcon>MARCHIO-BRILLATUTTO-NEW.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
@@ -80,6 +80,7 @@
     <Compile Include="PersonalUI\DialogSettings.Designer.cs">
       <DependentUpon>DialogSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\GestioneScritturaResoconto.cs" />
     <Compile Include="Utils\SingletonFileInizializzazione.cs" />
     <Compile Include="Utils\TipologiaWriteTemplateExcel.cs" />
     <Compile Include="Utils\Delegates.cs" />
@@ -146,6 +147,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BrillaTuttoSrl.ico" />
+    <Content Include="MARCHIO-BRILLATUTTO-NEW.ico" />
+    <None Include="Resources\MARCHIO BRILLATUTTO NEW.jpg" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

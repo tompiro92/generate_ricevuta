@@ -21,6 +21,7 @@ namespace Genera_Fatture.Utils
         private String COMUNE_CAP_PROVINCIA_CONDOMINIO_FATTURA = "F11";
         private String COSTO_FATTURA = "I16";
         private String ANNO_FATTURA = "E9";
+        private String DESCRIZIONE_FATTURA = "C16";
 
         public GestioneScritturaExcelTemplateFattura(String pathFile)
         {
@@ -82,6 +83,10 @@ namespace Genera_Fatture.Utils
             else if (type.Equals(TipologiaWriteTemplateExcel.ANNO_FATTURA))
             {
                 worksheet[ANNO_FATTURA].Text = text;
+            }
+            else if (type.Equals(TipologiaWriteTemplateExcel.DESCRIZIONE))
+            {
+                worksheet[DESCRIZIONE_FATTURA].Text = text;
             }
         }  
     }
