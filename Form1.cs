@@ -296,7 +296,6 @@ namespace Genera_Fatture
                                 String data = dateTimePicker1.Value.ToString("dd/MM/yyyy");
                                 String mese = dateTimePicker1.Value.AddMonths(-1).ToString("MMMM");
                                 String mese2 = dateTimePicker1.Value.ToString("MM");
-                                String meseIntero = dateTimePicker1.Value.ToString("MMMM");
                                 String sospeso = excelRicevute.retrieveSospesi(i);
                                 String indirizzo = "";
                                 String provincia = "";
@@ -366,7 +365,7 @@ namespace Genera_Fatture
                                         finalDescrizione = descrizione2;
                                     }
 
-                                    gestioneScritturaResoconto.writeInFile(data.ToUpper(), amministratore, nomeCondominio, finalDescrizione + " - " + meseIntero.ToUpper(), (costoPulizie + costoBidoni + costoPorta + costoGiardini));
+                                    gestioneScritturaResoconto.writeInFile(data.ToUpper(), amministratore, nomeCondominio, finalDescrizione + " - " + mese.ToUpper(), (costoPulizie + costoBidoni + costoPorta + costoGiardini));
                                      
 
                                     if (!valid)
